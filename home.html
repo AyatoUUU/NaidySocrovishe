@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+	<title>HomePage</title>
+	<meta charset="UTF-8">
+	<meta name="format-detection" content="telephone=no">
+	<!-- <style>body{opacity: 0;}</style> -->
+	<!-- <link rel="stylesheet" href="css/style.css"> -->
+	<!-- <meta name="robots" content="noindex, nofollow"> -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Nunito:wght@700&display=swap&_v=20230116030211"
+		rel="stylesheet">
+
+	<style>
+		/* ===================== */
+		.button {
+			border-radius: 0.25rem;
+			line-height: 1.5;
+			font-size: 1rem;
+			font-weight: 400;
+			font-family: "Montserrat";
+			padding: 0.375rem 0.75rem;
+		}
+
+		.button--pink {
+			background-color: #e83e8c;
+			color: white;
+		}
+
+		.button--blue {
+			color: white;
+			background-color: #007bff;
+		}
+
+		#startGameBtn {
+			font-family: "Nunito", sans-serif;
+			letter-spacing: 1.3px;
+			color: #ffffff;
+			position: relative;
+			top: 50%;
+			left: 50%;
+			z-index: 50;
+			display: inline-block;
+			-webkit-transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			background: #4FD1C5;
+			background: -o-linear-gradient(45deg, #442e66 0%, #7a39df 100%);
+			background: linear-gradient(45deg, #442e66 0%, #7a39df 100%);
+			-webkit-box-shadow: 0px 12px 24px #7438d2;
+			box-shadow: 0px 12px 24px #7438d2;
+			border-radius: 62.5rem;
+			line-height: 1.5;
+			font-weight: 700;
+			padding: 1rem 4.1875rem;
+			text-transform: uppercase;
+			-webkit-transition: all 0.3s ease-in-out 0s;
+			-o-transition: all 0.3s ease-in-out 0s;
+			transition: all 0.3s ease-in-out 0s;
+		}
+
+		#startGameBtn::before {
+			content: "";
+			border-radius: 1000px;
+			min-width: 312px;
+			min-height: 72px;
+			color: #000000 !important;
+			-webkit-box-shadow: 0px 12px 60px #7438d2;
+			box-shadow: 0px 12px 60px #7438d2;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			opacity: 0;
+			-webkit-transition: all 0.3s ease-in-out 0s;
+			-o-transition: all 0.3s ease-in-out 0s;
+			transition: all 0.3s ease-in-out 0s;
+			border: 6px solid #7438d2;
+		}
+
+		#startGameBtn:hover,
+		#startGameBtn:focus {
+			color: #7438d2 !important;
+			-webkit-transform: translate(-50%, -65%);
+			-ms-transform: translate(-50%, -65%);
+			transform: translate(-50%, -65%);
+		}
+
+		#startGameBtn:hover::before,
+		#startGameBtn:focus::before {
+			opacity: 1;
+		}
+
+		#startGameBtn::after {
+			content: "";
+			width: 30px;
+			height: 30px;
+			border-radius: 100%;
+			border: 6px solid #7438d2;
+			position: absolute;
+			z-index: -1;
+			top: 50%;
+			left: 50%;
+			-webkit-transform: translate(-50%, -50%);
+			-ms-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			-webkit-animation: ring 1.5s infinite;
+			animation: ring 1.5s infinite;
+		}
+
+		#startGameBtn:hover::after,
+		#startGameBtn:focus::after {
+			-webkit-animation: none;
+			animation: none;
+			display: none;
+		}
+
+		@-webkit-keyframes ring {
+			0% {
+				width: 30px;
+				height: 30px;
+				opacity: 1;
+			}
+
+			100% {
+				width: 200px;
+				height: 200px;
+				opacity: 0;
+			}
+		}
+
+		@keyframes ring {
+			0% {
+				width: 30px;
+				height: 30px;
+				opacity: 1;
+			}
+
+			100% {
+				width: 200px;
+				height: 200px;
+				opacity: 0;
+			}
+		}
+
+		body.locked {
+			overflow-y: hidden;
+		}
+
+		.model {
+			position: fixed;
+			top: 0;
+			left: 0;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-pack: center;
+			-ms-flex-pack: center;
+			justify-content: center;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+			width: 100%;
+			height: 100vh;
+			background-color: rgba(0, 0, 0, 0.5);
+			opacity: 0;
+			visibility: hidden;
+			-webkit-transform: scale(1.1);
+			-ms-transform: scale(1.1);
+			transform: scale(1.1);
+			-webkit-transition: all 0.25s ease-in-out 0s;
+			-o-transition: all 0.25s ease-in-out 0s;
+			transition: all 0.25s ease-in-out 0s;
+			color: black;
+			font-family: "Montserrat";
+			z-index: 100;
+			padding: 0 0.9375rem;
+		}
+
+		.model__content {
+			background-color: white;
+			padding: 1rem 1.5rem;
+			border-radius: 0.625rem;
+			-webkit-transform: translateY(-30%);
+			-ms-transform: translateY(-30%);
+			transform: translateY(-30%);
+		}
+
+		.model__stopwatch {
+			text-align: center;
+		}
+
+		.model__text {
+			margin-bottom: 1.125rem;
+			font-size: 1rem;
+			line-height: 1.625;
+			font-weight: 300;
+			color: #666;
+		}
+
+		.model__header {
+			padding: 0.75rem 0;
+			border-bottom: 1px solid #dee2e6;
+		}
+
+		.model__header p {
+			font-weight: 500;
+			font-size: 1.125rem;
+			line-height: 1.5;
+		}
+
+		.model__body {
+			padding: 1.5rem 0;
+		}
+
+		.model__time {
+			font-size: 2.5rem;
+			color: #212529;
+		}
+
+		.model__time span {
+			font-weight: 700;
+		}
+
+		.model__footer {
+			padding: 0.75rem 0;
+			border-top: 1px solid #dee2e6;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			gap: 0.9375rem;
+			-webkit-box-pack: end;
+			-ms-flex-pack: end;
+			justify-content: flex-end;
+		}
+
+		.show-model {
+			-webkit-transition: all 0.3s ease 0s;
+			-o-transition: all 0.3s ease 0s;
+			transition: all 0.3s ease 0s;
+			opacity: 1;
+			visibility: visible;
+			-webkit-transform: scale(1);
+			-ms-transform: scale(1);
+			transform: scale(1);
+		}
+
+		.game {
+			font-family: "Montserrat";
+		}
+
+		.game__inner {
+			padding: 0 0.9375rem;
+		}
+
+		.game__main-block {
+			max-width: 55.625rem;
+			position: relative;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			gap: 1.25rem;
+			margin: 0 auto;
+			margin-top: 1.25rem;
+		}
+
+		.game__actions {
+			-ms-flex-item-align: start;
+			-ms-grid-row-align: start;
+			align-self: start;
+			-webkit-box-orient: vertical;
+			-webkit-box-direction: normal;
+			-ms-flex-direction: column;
+			flex-direction: column;
+			gap: 0.75rem;
+			background-color: #F5F5F5;
+			border: 0.0625rem solid #E4E4E4;
+			border-radius: 3.125rem;
+			padding: 1.0625rem 0.625rem;
+			display: none;
+			align-items: center;
+		}
+
+		.game__icon {
+			width: 3rem;
+			height: 3.125rem;
+		}
+
+		.game__canvas {
+			background: url("../img/bg-1.jpg") center/cover no-repeat;
+		}
+
+		.game__canvas {
+			width: 100%;
+			position: relative;
+			padding-bottom: 56.2%;
+			-webkit-filter: blur(25px) grayscale(100%);
+			filter: blur(25px) grayscale(100%);
+			mix-blend-mode: luminosity;
+			-webkit-transition: all 0.3s ease 0s;
+			-o-transition: all 0.3s ease 0s;
+			transition: all 0.3s ease 0s;
+		}
+
+		.game__variants {
+			left: 6%;
+			top: 0;
+			position: absolute;
+			width: 63%;
+			height: 100%;
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-ms-flex-wrap: wrap;
+			flex-wrap: wrap;
+		}
+
+		.game__task-item {
+			-webkit-box-flex: 0;
+			-ms-flex: 0 1 50%;
+			flex: 0 1 50%;
+			cursor: pointer;
+		}
+
+		.game__start-window {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+		}
+
+		.game__action {
+			outline: none;
+			border: 0;
+		}
+
+		@media (min-width: 47.99875em) {
+			.model__content {
+				min-width: 28.125rem;
+			}
+		}
+
+		@media (min-width: 75em) {
+			#startGameBtn {
+				font-size: 1.375rem;
+			}
+		}
+
+		@media (max-width: 20em) {
+			#startGameBtn {
+				font-size: 0.875rem;
+			}
+		}
+
+		@media (max-width: 61.99875em) {
+			.game__main-block {
+				gap: 0.9375rem;
+			}
+
+			.game__icon {
+				height: 2.5rem;
+				width: 2.375rem;
+			}
+		}
+
+		@media (max-width: 47.99875em) {
+			#startGameBtn {
+				padding: 0.5rem 2.1875rem;
+			}
+
+			.model__footer {
+				-ms-flex-wrap: wrap-reverse;
+				flex-wrap: wrap-reverse;
+				-webkit-box-pack: center;
+				-ms-flex-pack: center;
+				justify-content: center;
+			}
+
+			.game__main-block {
+				gap: 0.625rem;
+			}
+
+			.game__icon {
+				height: 1.875rem;
+				width: 1.75rem;
+			}
+		}
+
+		@media (max-width: 29.99875em) {
+			.game__main-block {
+				-webkit-box-orient: vertical;
+				-webkit-box-direction: reverse;
+				-ms-flex-direction: column-reverse;
+				flex-direction: column-reverse;
+			}
+
+			.game__actions {
+				-webkit-box-orient: horizontal;
+				-webkit-box-direction: normal;
+				-ms-flex-direction: row;
+				flex-direction: row;
+				-ms-flex-item-align: end;
+				-ms-grid-row-align: end;
+				align-self: end;
+				padding: 0.625rem;
+			}
+
+			.game__canvas {
+				padding-bottom: 62.2%;
+			}
+		}
+
+		@media (min-width: 20em) and (max-width: 75em) {
+			@supports (font-size: clamp(0.875rem, 0.6931818182rem + 0.9090909091vw, 1.375rem)) {
+				#startGameBtn {
+					font-size: clamp(0.875rem, 0.6931818182rem + 0.9090909091vw, 1.375rem);
+				}
+			}
+
+			@supports not (font-size: clamp(0.875rem, 0.6931818182rem + 0.9090909091vw, 1.375rem)) {
+				#startGameBtn {
+					font-size: calc(0.875rem + 0.5 * (100vw - 20rem) / 55);
+				}
+			}
+		}
+
+		@media (any-hover: hover) {
+			.button--pink:hover {
+				background-color: #e42c82;
+				-webkit-transition: all 0.2s ease 0s;
+				-o-transition: all 0.2s ease 0s;
+				transition: all 0.2s ease 0s;
+			}
+
+			.button--blue:hover {
+				background-color: #0269d8;
+				-webkit-transition: all 0.3s ease 0s;
+				-o-transition: all 0.3s ease 0s;
+				transition: all 0.3s ease 0s;
+			}
+
+			#startGameBtn:hover {
+				-webkit-transition: all 0.3s ease 0s;
+				-o-transition: all 0.3s ease 0s;
+				transition: all 0.3s ease 0s;
+				background: -o-linear-gradient(261.63deg, #FFB606 14.66%, #EFA900 93.11%);
+				background: linear-gradient(188.37deg, #FFB606 14.66%, #EFA900 93.11%);
+				-webkit-box-shadow: 0px 20px 120px #FFB606;
+				box-shadow: 0px 20px 120px #FFB606;
+			}
+
+		}
+
+		.webp .game__canvas {
+			background: url(../img/bg-1.webp) center/cover no-repeat;
+		}
+	</style>
+</head>
+
+<body class="body">
+	<section class="game">
+		<div class="game__inner">
+			<div class="game__main-block">
+				<div class="game__canvas">
+					<div class="game__variants">
+						<div class="game__task-item"></div>
+						<div class="game__task-item"></div>
+						<div class="game__task-item"></div>
+						<div class="game__task-item trueAnswer"></div>
+					</div>
+				</div>
+				<div class="game__start-window">
+				</div>
+				<div class="game__actions">
+					<a href="#" class="game__action game__link">
+						<picture>
+							<source srcset="img/profile.webp" type="image/webp"><img src="img/profile.png" alt="Профиль"
+								class="game__icon">
+						</picture>
+					</a>
+					<button type="button" class="game__action game__repeat-Btn">
+						<picture>
+							<source srcset="img/repeat.webp" type="image/webp"><img src="img/repeat.png" alt="repeat"
+								class="game__icon">
+						</picture>
+					</button>
+					<button type="button" class="game__action game__fullsize-btn" id="fullSizeGameBtn">
+						<picture>
+							<source srcset="img/fullsize.webp" type="image/webp"><img src="img/fullsize.png" alt="fullsize"
+								class="game__icon">
+						</picture>
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div class="model" id="modelWindow">
+		<div class="model__content">
+			<div class="model__header">
+				<p>Поздравляем!</p>
+			</div>
+			<div class="model__body">
+				<div class="model__stopwatch">
+					<p class="model__text">Вы выполнили задание за:</p>
+					<p class="model__time">
+						<span class="minutes">00</span>:<span class="seconds">00</span>
+					</p>
+				</div>
+			</div>
+			<div class="model__footer">
+				<button type="button" class="button button--pink" id="buttonRepeatGame">Повторить</button>
+				<a href="#" class="button button--blue">Следующие задание</a>
+			</div>
+		</div>
+	</div>
+	<script>
+		(() => {
+			"use strict";
+			let addWindowScrollEvent = false;
+			setTimeout((() => {
+				if (addWindowScrollEvent) {
+					let windowScroll = new Event("windowScroll");
+					window.addEventListener("scroll", (function (e) {
+						document.dispatchEvent(windowScroll);
+					}));
+				}
+			}), 0);
+			class DynamicAdapt {
+				constructor(type) {
+					this.type = type;
+				}
+				init() {
+					this.оbjects = [];
+					this.daClassname = "_dynamic_adapt_";
+					this.nodes = [...document.querySelectorAll("[data-da]")];
+					this.nodes.forEach((node => {
+						const data = node.dataset.da.trim();
+						const dataArray = data.split(",");
+						const оbject = {};
+						оbject.element = node;
+						оbject.parent = node.parentNode;
+						оbject.destination = document.querySelector(`${dataArray[0].trim()}`);
+						оbject.breakpoint = dataArray[1] ? dataArray[1].trim() : "767";
+						оbject.place = dataArray[2] ? dataArray[2].trim() : "last";
+						оbject.index = this.indexInParent(оbject.parent, оbject.element);
+						this.оbjects.push(оbject);
+					}));
+					this.arraySort(this.оbjects);
+					this.mediaQueries = this.оbjects.map((({ breakpoint }) => `(${this.type}-width: ${breakpoint}px),${breakpoint}`)).filter(((item, index, self) => self.indexOf(item) === index));
+					this.mediaQueries.forEach((media => {
+						const mediaSplit = media.split(",");
+						const matchMedia = window.matchMedia(mediaSplit[0]);
+						const mediaBreakpoint = mediaSplit[1];
+						const оbjectsFilter = this.оbjects.filter((({ breakpoint }) => breakpoint === mediaBreakpoint));
+						matchMedia.addEventListener("change", (() => {
+							this.mediaHandler(matchMedia, оbjectsFilter);
+						}));
+						this.mediaHandler(matchMedia, оbjectsFilter);
+					}));
+				}
+				mediaHandler(matchMedia, оbjects) {
+					if (matchMedia.matches) оbjects.forEach((оbject => {
+						this.moveTo(оbject.place, оbject.element, оbject.destination);
+					})); else оbjects.forEach((({ parent, element, index }) => {
+						if (element.classList.contains(this.daClassname)) this.moveBack(parent, element, index);
+					}));
+				}
+				moveTo(place, element, destination) {
+					element.classList.add(this.daClassname);
+					if ("last" === place || place >= destination.children.length) {
+						destination.append(element);
+						return;
+					}
+					if ("first" === place) {
+						destination.prepend(element);
+						return;
+					}
+					destination.children[place].before(element);
+				}
+				moveBack(parent, element, index) {
+					element.classList.remove(this.daClassname);
+					if (void 0 !== parent.children[index]) parent.children[index].before(element); else parent.append(element);
+				}
+				indexInParent(parent, element) {
+					return [...parent.children].indexOf(element);
+				}
+				arraySort(arr) {
+					if ("min" === this.type) arr.sort(((a, b) => {
+						if (a.breakpoint === b.breakpoint) {
+							if (a.place === b.place) return 0;
+							if ("first" === a.place || "last" === b.place) return -1;
+							if ("last" === a.place || "first" === b.place) return 1;
+							return 0;
+						}
+						return a.breakpoint - b.breakpoint;
+					})); else {
+						arr.sort(((a, b) => {
+							if (a.breakpoint === b.breakpoint) {
+								if (a.place === b.place) return 0;
+								if ("first" === a.place || "last" === b.place) return 1;
+								if ("last" === a.place || "first" === b.place) return -1;
+								return 0;
+							}
+							return b.breakpoint - a.breakpoint;
+						}));
+						return;
+					}
+				}
+			}
+			const da = new DynamicAdapt("max");
+			da.init();
+			const buttonRepeatGame = document.getElementById("buttonRepeatGame");
+			const modelWindow = document.getElementById("modelWindow");
+			const documentBody = document.querySelector(".body");
+			const gameStartWindow = document.querySelector(".game__start-window");
+			const canvas = document.querySelector(".game__canvas");
+			const taskItems = document.querySelectorAll(".game__task-item");
+			const gameActions = document.querySelector(".game__actions");
+			const audioObject = {
+				clickSound: new Audio("../assets/audio/clickBtnSound.wav"),
+				startAudio: new Audio("../assets/audio/startAudio.wav"),
+				trueAnswer: new Audio("../assets/audio/trueAnswer.wav"),
+				falseAnswer: new Audio("../assets/audio/falseAnswer.wav")
+			};
+			function endGame() {
+				startConfetti();
+				showModelWindow();
+				clearInterval(interval);
+			}
+			function repeatGame() {
+				removeConfetti();
+				removeModelWindow();
+				clearInterval(interval);
+				milli = 0;
+				seconds = 0;
+				minutes = 0;
+				getSeconds.innerText = "00";
+				getMinutes.innerText = "00";
+				interval = setInterval(startTime, 10);
+			}
+			buttonRepeatGame.addEventListener("click", (function (e) {
+				repeatGame();
+			}));
+			function showModelWindow() {
+				modelWindow.classList.add("show-model");
+				documentBody.classList.add("locked");
+			}
+			function removeModelWindow() {
+				modelWindow.classList.remove("show-model");
+				documentBody.classList.remove("locked");
+			}
+			window.addEventListener("load", (function (e) {
+				gameStartWindow.innerHTML = '<button id="startGameBtn">Начать игру</button>';
+				const startGameBtn = document.getElementById("startGameBtn");
+				startGameBtn.addEventListener("click", (function () {
+					canvas.style.filter = "none";
+					canvas.style.mixBlendMode = "normal";
+					startGameBtn.style.display = "none";
+					audioObject.clickSound.play();
+					audioObject.startAudio.play();
+					gameStartWindow.style.display = "none";
+					interval = setInterval(startTime, 10);
+					gameActions.style.display = "inline-flex";
+				}));
+				for (const taskItem of taskItems) taskItem.addEventListener("click", (function () {
+					if (taskItem.classList.contains("trueAnswer")) {
+						audioObject.trueAnswer.play();
+						endGame();
+					} else audioObject.falseAnswer.play();
+				}));
+			}));
+			const getSeconds = document.querySelector(".seconds");
+			const getMinutes = document.querySelector(".minutes");
+			let milli = 0;
+			let seconds = 0;
+			let minutes = 0;
+			let interval;
+			function startTime() {
+				milli++;
+				if (milli > 99) {
+					seconds++;
+					getSeconds.innerText = "0" + seconds;
+					milli = 0;
+				}
+				if (seconds > 9) getSeconds.innerText = seconds;
+				if (seconds > 59) {
+					minutes++;
+					getMinutes.innerText = "0" + minutes;
+					seconds = 0;
+					getSeconds.innerText = "0" + 0;
+				}
+				if (minutes > 9) getMinutes.innerText = minutes;
+			}
+			let maxParticleCount = 150;
+			let particleSpeed = 2;
+			let startConfetti;
+			let stopConfetti;
+			let toggleConfetti;
+			let removeConfetti;
+			(function () {
+				startConfetti = startConfettiInner;
+				stopConfetti = stopConfettiInner;
+				toggleConfetti = toggleConfettiInner;
+				removeConfetti = removeConfettiInner;
+				let colors = ["DodgerBlue", "OliveDrab", "Gold", "Pink", "SlateBlue", "LightBlue", "Violet", "PaleGreen", "SteelBlue", "SandyBrown", "Chocolate", "Crimson"];
+				let streamingConfetti = false;
+				let animationTimer = null;
+				let particles = [];
+				let waveAngle = 0;
+				function resetParticle(particle, width, height) {
+					particle.color = colors[Math.random() * colors.length | 0];
+					particle.x = Math.random() * width;
+					particle.y = Math.random() * height - height;
+					particle.diameter = 10 * Math.random() + 5;
+					particle.tilt = 10 * Math.random() - 10;
+					particle.tiltAngleIncrement = .07 * Math.random() + .05;
+					particle.tiltAngle = 0;
+					return particle;
+				}
+				function startConfettiInner() {
+					var width = window.innerWidth;
+					var height = window.innerHeight;
+					window.requestAnimFrame = function () {
+						return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (callback) {
+							return window.setTimeout(callback, 16.6666667);
+						};
+					}();
+					let canvas = document.getElementById("confetti-canvas");
+					if (null === canvas) {
+						canvas = document.createElement("canvas");
+						canvas.setAttribute("id", "confetti-canvas");
+						canvas.setAttribute("style", "display:block;z-index:999999;pointer-events:none;position:absolute;");
+						document.body.prepend(canvas);
+						canvas.width = width;
+						canvas.height = height;
+						window.addEventListener("resize", (function () {
+							canvas.width = window.innerWidth;
+							canvas.height = window.innerHeight;
+						}), true);
+					}
+					let context = canvas.getContext("2d");
+					while (particles.length < maxParticleCount) particles.push(resetParticle({}, width, height));
+					streamingConfetti = true;
+					if (null === animationTimer) (function runAnimation() {
+						context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+						if (0 === particles.length) animationTimer = null; else {
+							updateParticles();
+							drawParticles(context);
+							animationTimer = requestAnimFrame(runAnimation);
+						}
+					})();
+				}
+				function stopConfettiInner() {
+					streamingConfetti = false;
+				}
+				function removeConfettiInner() {
+					stopConfetti();
+					particles = [];
+				}
+				function toggleConfettiInner() {
+					if (streamingConfetti) stopConfettiInner(); else startConfettiInner();
+				}
+				function drawParticles(context) {
+					let particle;
+					let x;
+					for (var i = 0; i < particles.length; i++) {
+						particle = particles[i];
+						context.beginPath();
+						context.lineWidth = particle.diameter;
+						context.strokeStyle = particle.color;
+						x = particle.x + particle.tilt;
+						context.moveTo(x + particle.diameter / 2, particle.y);
+						context.lineTo(x, particle.y + particle.tilt + particle.diameter / 2);
+						context.stroke();
+					}
+				}
+				function updateParticles() {
+					let width = window.innerWidth;
+					let height = window.innerHeight;
+					let particle;
+					waveAngle += .01;
+					for (let i = 0; i < particles.length; i++) {
+						particle = particles[i];
+						if (!streamingConfetti && particle.y < -15) particle.y = height + 100; else {
+							particle.tiltAngle += particle.tiltAngleIncrement;
+							particle.x += Math.sin(waveAngle);
+							particle.y += .5 * (Math.cos(waveAngle) + particle.diameter + particleSpeed);
+							particle.tilt = 15 * Math.sin(particle.tiltAngle);
+						}
+						if (particle.x > width + 20 || particle.x < -20 || particle.y > height) if (streamingConfetti && particles.length <= maxParticleCount) resetParticle(particle, width, height); else {
+							particles.splice(i, 1);
+							i--;
+						}
+					}
+				}
+			})();
+			window["FLS"] = true;
+		})();
+	</script>
+</body>
+
+</html>
